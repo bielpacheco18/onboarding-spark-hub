@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TrainingModules from "./pages/TrainingModules";
 import TaskFlow from "./pages/TaskFlow";
+import HowItWorks from "./pages/HowItWorks";
 
 const App = () => {
   // Create a client inside the component
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/training-modules" element={<TrainingModules />} />
             <Route path="/taskflow" element={<TaskFlow />} />
+            <Route path="/como-funciona" element={<HowItWorks />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

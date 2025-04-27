@@ -1,8 +1,13 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import DemoModal from "./DemoModal";
 
 const Hero = () => {
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white py-16 sm:py-24">
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
@@ -17,17 +22,33 @@ const Hero = () => {
             ideal para pequenas e médias empresas que desejam otimizar tempo, reduzir custos e escalar treinamentos.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button size="lg" className="bg-brand-600 hover:bg-brand-700">
+            <Button 
+              size="lg" 
+              className="bg-brand-600 hover:bg-brand-700"
+              onClick={() => setDemoModalOpen(true)}
+            >
               Solicitar Demonstração <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" className="border-brand-300 text-brand-700">
-              Como Funciona
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-brand-300 text-brand-700"
+              asChild
+            >
+              <Link to="/como-funciona">
+                Como Funciona
+              </Link>
             </Button>
           </div>
         </div>
       </div>
       <div className="absolute right-[-10%] top-1/2 transform -translate-y-1/2 w-96 h-96 bg-accent-100 rounded-full blur-3xl opacity-30"></div>
       <div className="absolute left-[-10%] top-1/3 transform -translate-y-1/2 w-96 h-96 bg-brand-100 rounded-full blur-3xl opacity-30"></div>
+      
+      <DemoModal 
+        open={demoModalOpen}
+        onOpenChange={setDemoModalOpen}
+      />
     </div>
   );
 };
