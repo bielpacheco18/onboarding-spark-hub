@@ -10,6 +10,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import SEO from "@/components/SEO";
 
 type TrainingModule = {
   id: string;
@@ -36,6 +37,11 @@ export default function TrainingModules() {
 
   return (
     <div className="max-w-2xl mx-auto p-8">
+      <SEO 
+        title="Módulos de Treinamento" 
+        description="Explore nossos módulos de treinamento estruturados para otimizar o processo de onboarding e capacitação da sua equipe."
+        canonicalUrl="https://onboardingsparkhub.com/training-modules"
+      />
       <h1 className="text-2xl font-bold mb-6">Training Modules</h1>
       {isLoading && (
         <div>
