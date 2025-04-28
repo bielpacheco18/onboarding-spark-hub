@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import DemoModal from "./DemoModal";
 
 const navigation = [
   { name: "Benefícios", href: "#beneficios" },
@@ -11,6 +13,7 @@ const navigation = [
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -40,9 +43,18 @@ const Navbar = () => {
               {item.name}
             </a>
           ))}
+          <Link
+            to="/como-funciona"
+            className="text-sm font-semibold leading-6 text-gray-900 hover:text-brand-600 transition-colors"
+          >
+            Como Funciona
+          </Link>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Button className="bg-brand-600 hover:bg-brand-700">
+          <Button 
+            className="bg-brand-600 hover:bg-brand-700"
+            onClick={() => setDemoModalOpen(true)}
+          >
             Solicitar Demo
           </Button>
         </div>
@@ -79,9 +91,22 @@ const Navbar = () => {
                       {item.name}
                     </a>
                   ))}
+                  <Link
+                    to="/como-funciona"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Como Funciona
+                  </Link>
                 </div>
                 <div className="py-6">
-                  <Button className="w-full bg-brand-600 hover:bg-brand-700">
+                  <Button 
+                    className="w-full bg-brand-600 hover:bg-brand-700"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setDemoModalOpen(true);
+                    }}
+                  >
                     Solicitar Demo
                   </Button>
                 </div>
@@ -90,6 +115,11 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      <DemoModal 
+        open={demoModalOpen}
+        onOpenChange={setDemoModalOpen}
+      />
     </header>
   );
 };

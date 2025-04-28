@@ -1,8 +1,12 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import DemoModal from "./DemoModal";
 
 const Cta = () => {
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
+  
   return (
     <section id="cta" className="py-16 bg-brand-600">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,12 +22,18 @@ const Cta = () => {
             <Button 
               size="lg" 
               className="bg-white text-brand-600 hover:bg-brand-50"
+              onClick={() => setDemoModalOpen(true)}
             >
               Solicitar Demonstração Gratuita <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
+      
+      <DemoModal 
+        open={demoModalOpen}
+        onOpenChange={setDemoModalOpen}
+      />
     </section>
   );
 };
