@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ const pricingPlans: PricingPlan[] = [
   {
     id: "basic",
     name: "Básico",
-    price: "R$149",
+    price: "R$99",
     description: "Perfeito para empresas pequenas em crescimento.",
     features: [
       "Até 50 novos funcionários/ano",
@@ -35,7 +34,7 @@ const pricingPlans: PricingPlan[] = [
   {
     id: "premium",
     name: "Premium",
-    price: "R$299",
+    price: "R$199",
     description: "Para empresas médias com necessidades específicas.",
     features: [
       "Até 200 novos funcionários/ano",
@@ -51,7 +50,7 @@ const pricingPlans: PricingPlan[] = [
   {
     id: "elite",
     name: "Elite",
-    price: "R$599",
+    price: "R$399",
     description: "Solução completa para grandes corporações.",
     features: [
       "Funcionários ilimitados",
