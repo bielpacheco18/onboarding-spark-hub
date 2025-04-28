@@ -23,6 +23,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><a href="#beneficios" className="text-gray-600 hover:text-brand-600">Benefícios</a></li>
               <li><a href="#funcionalidades" className="text-gray-600 hover:text-brand-600">Funcionalidades</a></li>
+              <li><a href="#pricing" className="text-gray-600 hover:text-brand-600">Planos</a></li>
               <li><a href="#publico-alvo" className="text-gray-600 hover:text-brand-600">Público-Alvo</a></li>
             </ul>
           </div>

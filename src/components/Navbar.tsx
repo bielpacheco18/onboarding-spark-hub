@@ -9,6 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const navigation = [
   { name: "Benefícios", href: "#beneficios" },
   { name: "Funcionalidades", href: "#funcionalidades" },
+  { name: "Planos", href: "#pricing" },
   { name: "Público-Alvo", href: "#publico-alvo" },
 ];
 
