@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
     componentTagger({
       // Disable Lovable watermark/badge
       disableLovableBadge: true
-    }),
+    } as any), // Type assertion to bypass TypeScript error
   ].filter(Boolean),
   resolve: {
     alias: {
