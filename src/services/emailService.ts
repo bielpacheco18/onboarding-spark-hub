@@ -34,10 +34,16 @@ export const sendDemoRequestEmail = async (data: DemoRequestFormData, selectedPl
     }
     
     console.log("Email response:", responseData);
-    return true;
+    
+    // Check if we need an API key
+    if (responseData && !responseData.success && responseData.needsApiKey) {
+      return { success: false, needsApiKey: true, message: "Chave de API Resend não configurada" };
+    }
+    
+    return { success: true };
   } catch (error) {
     console.error("Erro no envio de e-mail:", error);
-    return false;
+    return { success: false, message: "Erro ao enviar e-mail" };
   }
 };
 
@@ -66,7 +72,17 @@ export const sendTestEmail = async () => {
       throw new Error("Não foi possível enviar o e-mail de teste");
     }
     
-    console.log("Email de teste enviado com sucesso:", data);
+    console.log("Email de teste response:", data);
+    
+    // Check if we need an API key
+    if (data && !data.success && data.needsApiKey) {
+      return { 
+        success: false, 
+        needsApiKey: true, 
+        message: "Chave de API Resend não configurada. Configure a chave para enviar emails." 
+      };
+    }
+    
     return { success: true, message: "E-mail de teste enviado com sucesso" };
   } catch (error) {
     console.error("Erro no envio de e-mail de teste:", error);

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -28,16 +27,27 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
       console.log("Form data:", { ...data, selectedPlan });
       
       // Send email notification
-      const emailSent = await sendDemoRequestEmail(data, selectedPlan);
+      const result = await sendDemoRequestEmail(data, selectedPlan);
       
-      toast({
-        title: "Solicitação enviada!",
-        description: emailSent 
-          ? "Entraremos em contato em breve." 
-          : "Sua solicitação foi registrada, mas houve um problema com a notificação por e-mail.",
-      });
-      
-      onOpenChange(false);
+      if (result.needsApiKey) {
+        toast({
+          title: "Configuração necessária",
+          description: "Configure a chave de API Resend para enviar emails.",
+          variant: "destructive",
+        });
+      } else if (result.success) {
+        toast({
+          title: "Solicitação enviada!",
+          description: "Entraremos em contato em breve.",
+        });
+        onOpenChange(false);
+      } else {
+        toast({
+          title: "Erro ao enviar formulário",
+          description: result.message || "Por favor, tente novamente mais tarde.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Erro ao enviar formulário",
@@ -55,11 +65,19 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
     try {
       const result = await sendTestEmail();
       
-      toast({
-        title: result.success ? "E-mail de teste enviado!" : "Erro ao enviar e-mail",
-        description: result.message,
-        variant: result.success ? "default" : "destructive",
-      });
+      if (result.needsApiKey) {
+        toast({
+          title: "Configuração necessária",
+          description: "Configure a chave de API Resend para enviar emails.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: result.success ? "E-mail de teste enviado!" : "Erro ao enviar e-mail",
+          description: result.message,
+          variant: result.success ? "default" : "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Erro ao enviar e-mail de teste",
@@ -103,6 +121,9 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
           </Button>
           <p className="text-xs text-muted-foreground mt-1">
             Clique para verificar se o sistema de e-mails está funcionando corretamente.
+          </p>
+          <p className="text-xs text-red-500 mt-2">
+            IMPORTANTE: É necessário configurar a chave de API Resend para enviar emails.
           </p>
         </div>
       </DialogContent>

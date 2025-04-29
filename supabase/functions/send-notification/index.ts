@@ -38,11 +38,12 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Check if Resend is configured
     if (!resend) {
-      console.warn("Resend API key not configured. Email will not be sent.");
+      console.error("Resend API key not configured. Email will not be sent.");
       return new Response(
         JSON.stringify({ 
           success: false, 
-          message: "Email notification not sent: API key not configured" 
+          message: "Email notification not sent: Resend API key not configured",
+          needsApiKey: true
         }),
         {
           status: 200,
