@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -50,18 +51,61 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
     },
   });
 
+  const sendEmailNotification = async (data: z.infer<typeof formSchema>) => {
+    try {
+      // Format the message with form data
+      const emailBody = {
+        to: "onboardingsparkhub@outlook.com",
+        subject: `Nova Solicitação de Demo: ${data.company} - Plano ${selectedPlan || 'Não especificado'}`,
+        message: `
+          Nova solicitação de demonstração:
+          
+          Nome: ${data.name}
+          Email: ${data.email}
+          Empresa: ${data.company}
+          Função: ${data.role}
+          Número de funcionários: ${data.employees}
+          Plano selecionado: ${selectedPlan || 'Não especificado'}
+          
+          Mensagem adicional:
+          ${data.message || 'Nenhuma mensagem adicional'}
+        `
+      };
+
+      // Send email notification using Supabase Edge Function
+      const { error } = await supabase.functions.invoke('send-notification', {
+        body: emailBody
+      });
+
+      if (error) {
+        console.error("Erro ao enviar e-mail:", error);
+        throw new Error("Não foi possível enviar o e-mail de notificação");
+      }
+      
+      return true;
+    } catch (error) {
+      console.error("Erro no envio de e-mail:", error);
+      return false;
+    }
+  };
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
     try {
       // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       console.log("Form data:", { ...data, selectedPlan });
       
+      // Send email notification
+      const emailSent = await sendEmailNotification(data);
+      
       toast({
         title: "Solicitação enviada!",
-        description: "Entraremos em contato em breve.",
+        description: emailSent 
+          ? "Entraremos em contato em breve." 
+          : "Sua solicitação foi registrada, mas houve um problema com a notificação por e-mail.",
       });
       
       form.reset();
