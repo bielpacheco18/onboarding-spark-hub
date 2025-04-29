@@ -14,7 +14,7 @@ const SEO = ({
   description = "Plataforma SaaS que automatiza o processo de integração e capacitação de novos colaboradores, ideal para pequenas e médias empresas.",
   canonicalUrl = "https://onboardingsparkhub.com",
   ogType = "website",
-  ogImage = "https://lovable.dev/opengraph-image-p98pqg.png",
+  ogImage = "https://onboardingsparkhub.com/opengraph-image.png",
 }: SEOProps) => {
   const fullTitle = title === "OnboardingSparkHub - Automação de Onboarding e Treinamento" 
     ? title 
