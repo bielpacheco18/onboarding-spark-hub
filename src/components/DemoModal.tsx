@@ -55,7 +55,7 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
     try {
       // Format the message with form data
       const emailBody = {
-        to: "onboardingsparkhub@outlook.com",
+        to: "onboardingsparkhub@outlook.com", // Updated email address here
         subject: `Nova Solicitação de Demo: ${data.company} - Plano ${selectedPlan || 'Não especificado'}`,
         message: `
           <h2>Nova solicitação de demonstração</h2>
