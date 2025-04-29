@@ -12,11 +12,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger({
-      // Disable Lovable watermark/badge
-      disableLovableBadge: true
-    } as any), // Type assertion to bypass TypeScript error
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
