@@ -58,22 +58,22 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
         to: "onboardingsparkhub@outlook.com",
         subject: `Nova Solicitação de Demo: ${data.company} - Plano ${selectedPlan || 'Não especificado'}`,
         message: `
-          Nova solicitação de demonstração:
+          <h2>Nova solicitação de demonstração</h2>
           
-          Nome: ${data.name}
-          Email: ${data.email}
-          Empresa: ${data.company}
-          Função: ${data.role}
-          Número de funcionários: ${data.employees}
-          Plano selecionado: ${selectedPlan || 'Não especificado'}
+          <p><strong>Nome:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Empresa:</strong> ${data.company}</p>
+          <p><strong>Função:</strong> ${data.role}</p>
+          <p><strong>Número de funcionários:</strong> ${data.employees}</p>
+          <p><strong>Plano selecionado:</strong> ${selectedPlan || 'Não especificado'}</p>
           
-          Mensagem adicional:
-          ${data.message || 'Nenhuma mensagem adicional'}
+          <p><strong>Mensagem adicional:</strong><br>
+          ${data.message || 'Nenhuma mensagem adicional'}</p>
         `
       };
 
       // Send email notification using Supabase Edge Function
-      const { error } = await supabase.functions.invoke('send-notification', {
+      const { data: responseData, error } = await supabase.functions.invoke('send-notification', {
         body: emailBody
       });
 
@@ -82,6 +82,7 @@ const DemoModal = ({ open, onOpenChange, selectedPlan }: DemoModalProps) => {
         throw new Error("Não foi possível enviar o e-mail de notificação");
       }
       
+      console.log("Email response:", responseData);
       return true;
     } catch (error) {
       console.error("Erro no envio de e-mail:", error);

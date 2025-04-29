@@ -1,10 +1,15 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Initialize Resend with API key from environment variable
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface EmailRequest {
   to: string;
@@ -31,14 +36,33 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Subject: ${subject}`);
     console.log(`Message: ${message}`);
 
-    // In a production environment, you would integrate with an email service here
-    // For example: SendGrid, AWS SES, Resend, etc.
-    
-    // For now, we'll simulate a successful email send
-    // This would be replaced with actual email sending code in production
-    
+    // Check if Resend is configured
+    if (!resend) {
+      console.warn("Resend API key not configured. Email will not be sent.");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: "Email notification not sent: API key not configured" 
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Send email using Resend
+    const emailResponse = await resend.emails.send({
+      from: "OnboardingSparkHub <onboarding@resend.dev>",
+      to: [to],
+      subject: subject,
+      html: message,
+    });
+
+    console.log("Email sent successfully:", emailResponse);
+
     return new Response(
-      JSON.stringify({ success: true, message: "Email notification sent successfully" }),
+      JSON.stringify({ success: true, message: "Email notification sent successfully", data: emailResponse }),
       {
         status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -47,7 +71,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-notification function:", error);
     return new Response(
-      JSON.stringify({ error: error.message || "Internal server error" }),
+      JSON.stringify({ success: false, error: error.message || "Internal server error" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
