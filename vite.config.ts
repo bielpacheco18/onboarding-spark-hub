@@ -12,9 +12,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' && componentTagger({
-      disableLovableBadge: true
-    } as any), // Use type assertion to fix TypeScript error
+    mode === 'development' && componentTagger(), // Remove the configuration object
   ].filter(Boolean),
   resolve: {
     alias: {
